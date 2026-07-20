@@ -1,12 +1,19 @@
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { VerifyWorkerButton } from "@/components/admin/verify-worker-button";
 
 export default async function AdminDashboardPage() {
-  const [userCount, bookingCount, paymentCount, reviewCount] = await Promise.all([
+  const [userCount, bookingCount, paymentCount, reviewCount, pendingWorkers] = await Promise.all([
     prisma.user.count(),
     prisma.booking.count(),
     prisma.payment.count(),
     prisma.review.count(),
+    prisma.worker.findMany({
+      where: { isVerified: false },
+      include: { user: true, skills: true },
+      orderBy: { createdAt: "desc" },
+    }),
   ]);
 
   const revenue = await prisma.payment.aggregate({
@@ -46,6 +53,45 @@ export default async function AdminDashboardPage() {
           <CardContent className="text-3xl font-semibold">{reviewCount}</CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Pending worker verification</CardTitle>
+          <CardDescription>Review new worker profiles before they appear publicly.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>City</TableHead>
+                <TableHead>Skills</TableHead>
+                <TableHead className="text-right">Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {pendingWorkers.length ? pendingWorkers.map((worker) => (
+                <TableRow key={worker.id}>
+                  <TableCell>{worker.user.name}</TableCell>
+                  <TableCell>{worker.user.email}</TableCell>
+                  <TableCell>{worker.city ?? "—"}</TableCell>
+                  <TableCell>{worker.skills.map((skill) => skill.name).join(", ") || "—"}</TableCell>
+                  <TableCell className="text-right">
+                    <VerifyWorkerButton workerId={worker.id} />
+                  </TableCell>
+                </TableRow>
+              )) : (
+                <TableRow>
+                  <TableCell colSpan={5} className="py-8 text-center text-sm text-slate-500">
+                    No pending worker profiles.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

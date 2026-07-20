@@ -1,210 +1,274 @@
-// src/app/page.tsx (or app/page.tsx)
-import { Zap, ShieldCheck, IndianRupee, MessageCircle, UserPlus, ArrowRight, Star } from 'lucide-react';
+import Link from "next/link";
+import {
+  BadgeCheck,
+  BrushCleaning,
+  Clock3,
+  Globe2,
+  Hammer,
+  MapPin,
+  MessageCircle,
+  Send,
+  ShieldCheck,
+  Sparkles,
+  Star,
+  UserPlus,
+  Wrench,
+  Zap,
+} from "lucide-react";
+import { Badge } from "../components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// Replace these with your actual links
-const WHATSAPP_LINK = "https://wa.me/919999999999?text=Hi%20NINT,%20I%20need%20a%20worker.";
-const GOOGLE_FORM_LINK = "https://forms.gle/your-google-form-id";
+const services = [
+  { title: "Electrician", icon: Zap, description: "Switches, wiring and urgent repairs" },
+  { title: "Plumber", icon: Wrench, description: "Leak fixes, taps and pipe installations" },
+  { title: "Carpenter", icon: Hammer, description: "Furniture work and home fittings" },
+  { title: "Painter", icon: BrushCleaning, description: "Wall, ceiling and touch-up painting" },
+  { title: "AC Repair", icon: Sparkles, description: "Cooling service and maintenance" },
+  { title: "Home Cleaning", icon: BadgeCheck, description: "Deep cleaning and move-in support" },
+];
+
+const steps = [
+  { title: "Search", description: "Choose the service you need and compare nearby verified workers." },
+  { title: "Compare Profiles", description: "Review ratings, experience and pricing before you book." },
+  { title: "Book via WhatsApp", description: "Confirm availability instantly and get the job started fast." },
+];
+
+const trustBadges = [
+  "100% Verified Profiles",
+  "Instant Booking via WhatsApp",
+  "Best Market Rates",
+];
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col bg-white text-slate-900 pb-24 sm:pb-0">
-      
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100">
-        <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500 text-white font-bold text-lg">N</div>
-            <span className="text-xl font-bold tracking-tight">NINT</span>
+    <main className="min-h-screen bg-slate-50 text-slate-900">
+      <div className="border-b border-slate-200 bg-slate-900 px-4 py-2 text-center text-sm font-medium text-slate-100">
+        Trusted by 10,000+ homes across India 🇮🇳
+      </div>
+
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-lg font-semibold text-white">
+              N
+            </div>
+            <div>
+              <p className="text-lg font-semibold tracking-tight text-slate-900">nint.co.in</p>
+              <p className="text-xs text-slate-500">Premium local services</p>
+            </div>
+          </Link>
+
+          <nav className="hidden items-center gap-6 text-sm font-medium text-slate-600 md:flex">
+            <Link href="/services" className="transition hover:text-primary">
+              Find Workers
+            </Link>
+            <a href="#how-it-works" className="transition hover:text-primary">
+              How it works
+            </a>
+            <a href="#about" className="transition hover:text-primary">
+              About
+            </a>
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <Button asChild variant="outline" size="sm" className="hidden sm:inline-flex">
+              <Link href="/auth/login">Login</Link>
+            </Button>
+            <Button asChild size="sm" className="bg-primary text-white hover:bg-blue-700">
+              <Link href="/auth/register">Join as Worker</Link>
+            </Button>
           </div>
-          <a 
-            href={WHATSAPP_LINK} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
-          >
-            Find Worker
-          </a>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-24 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-orange-50 px-4 py-1.5 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-200 mb-6">
-            <span className="flex h-2 w-2 rounded-full bg-orange-500 animate-pulse"></span>
-            Trusted by 10,000+ homes across India
-          </div>
-          
-          <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-6xl leading-tight">
-            Find Trusted Local <br className="hidden sm:block" />
-            <span className="text-orange-500">Workers Instantly</span>
-          </h1>
-          
-          <p className="mt-6 max-w-2xl mx-auto text-lg text-slate-600 sm:text-xl">
-            Connect with verified daily wage workers and home service professionals near you. Fast, fair, and reliable.
-          </p>
+      <section className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-28">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+          <div>
+            <Badge className="mb-5 border-blue-200 bg-blue-50 text-blue-700">
+              <ShieldCheck className="mr-2 h-3.5 w-3.5" />
+              Trusted by 10,000+ homes across India
+            </Badge>
+            <h1 className="max-w-2xl text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+              Find Trusted Local Workers Instantly
+            </h1>
+            <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600">
+              Connecting you with verified daily wage workers and service professionals near you.
+            </p>
 
-          {/* Primary CTAs */}
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href={WHATSAPP_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-green-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-green-500/30 transition hover:bg-green-600 active:scale-95"
-            >
-              <MessageCircle className="h-5 w-5" />
-              Find a Worker Now
-            </a>
-            <a
-              href={GOOGLE_FORM_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-white px-8 py-4 text-base font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 transition hover:bg-slate-50 active:scale-95"
-            >
-              <UserPlus className="h-5 w-5 text-slate-500" />
-              Join as a Worker
-            </a>
-          </div>
-
-          {/* Trust Badges */}
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-sm text-slate-500">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="h-5 w-5 text-green-500" />
-              100% Verified Profiles
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button asChild size="lg" className="bg-primary px-6 text-white hover:bg-blue-700">
+                <Link href="/services">
+                  <MessageCircle className="h-4 w-4" />
+                  Find a Worker Now
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="px-6">
+                <Link href="/auth/register">
+                  <UserPlus className="h-4 w-4" />
+                  Join as a Worker
+                </Link>
+              </Button>
             </div>
-            <div className="flex items-center gap-2">
-              <Zap className="h-5 w-5 text-orange-500" />
-              Instant Booking via WhatsApp
+
+            <div className="mt-8 flex flex-col gap-3 text-sm font-medium text-slate-600 sm:flex-row sm:flex-wrap">
+              {trustBadges.map((badge) => (
+                <div key={badge} className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 shadow-sm">
+                  <span className="text-base">✓</span>
+                  {badge}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-shadow relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-3">
+            <img
+              src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80"
+              alt="Professional worker in uniform"
+              className="h-[420px] w-full rounded-[1.5rem] object-cover"
+            />
+            <div className="absolute inset-x-6 bottom-6 rounded-2xl border border-white/70 bg-white/90 p-4 shadow-lg backdrop-blur">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">Verified local experts</p>
+                  <p className="text-sm text-slate-600">Available today for home and business needs</p>
+                </div>
+                <div className="rounded-full bg-emerald-500 px-3 py-1 text-sm font-semibold text-white">
+                  4.9/5 Rated
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* How it Works Section */}
-      <section className="bg-slate-50 py-16 sm:py-24">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-              How NINT Works
-            </h2>
-            <p className="mt-4 text-lg text-slate-600">Simple, transparent, and designed for your convenience.</p>
+      <section id="services" className="px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-600">Popular Services</p>
+              <h2 className="text-3xl font-semibold tracking-tight text-slate-900">Choose the service you need</h2>
+            </div>
+            <Link href="/services" className="text-sm font-semibold text-primary hover:underline">
+              Explore all workers →
+            </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {/* Card 1 */}
-            <div className="relative rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-100 transition hover:shadow-md">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 text-orange-600 mb-6">
-                <Zap className="h-6 w-6" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Fast Booking</h3>
-              <p className="text-slate-600">
-                Skip the endless searches. Message us on WhatsApp, and we will connect you with an available worker in your area immediately.
-              </p>
-            </div>
-
-            {/* Card 2 */}
-            <div className="relative rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-100 transition hover:shadow-md">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-100 text-green-600 mb-6">
-                <ShieldCheck className="h-6 w-6" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Verified Profiles</h3>
-              <p className="text-slate-600">
-                Safety first. Every worker on NINT is background-checked and verified, so you can hire with complete peace of mind.
-              </p>
-            </div>
-
-            {/* Card 3 */}
-            <div className="relative rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-100 transition hover:shadow-md">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-600 mb-6">
-                <IndianRupee className="h-6 w-6" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Fair Prices</h3>
-              <p className="text-slate-600">
-                No middlemen, no hidden charges. Get transparent, fair pricing for daily wage work and home services.
-              </p>
-            </div>
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {services.map((service) => {
+              const Icon = service.icon;
+              return (
+                <Card key={service.title} className="border-slate-200 bg-white transition hover:-translate-y-1 hover:shadow-lg">
+                  <CardHeader className="pb-3">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-primary">
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <CardTitle className="text-xl">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm leading-7 text-slate-600">{service.description}</p>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* Social Proof / Testimonial Snippet */}
-      <section className="py-16 sm:py-20 bg-white">
-        <div className="mx-auto max-w-3xl px-4 text-center">
-          <div className="flex justify-center gap-1 mb-4">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="h-6 w-6 fill-orange-400 text-orange-400" />
+      <section id="how-it-works" className="px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm sm:p-12">
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-600">How it works</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">Three simple steps to book trusted help</h2>
+          </div>
+
+          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+            {steps.map((step, index) => (
+              <div key={step.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white">
+                  0{index + 1}
+                </div>
+                <h3 className="text-xl font-semibold text-slate-900">{step.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600">{step.description}</p>
+              </div>
             ))}
           </div>
-          <blockquote className="text-2xl font-medium leading-relaxed text-slate-800 sm:text-3xl">
-            “Found an electrician in 15 minutes. The worker was polite, verified, and did the job perfectly. NINT is a game-changer!”
-          </blockquote>
-          <div className="mt-6 flex items-center justify-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-600">R</div>
-            <div className="text-left">
-              <p className="font-semibold text-slate-900">Rahul Sharma</p>
-              <p className="text-sm text-slate-500">Bengaluru</p>
+        </div>
+      </section>
+
+      <section id="about" className="px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-6 rounded-[2rem] border border-slate-200 bg-slate-900 p-8 text-white shadow-xl lg:grid-cols-[1fr_0.7fr] lg:p-12">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-200">Why customers choose nint</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight">Premium service, real trust and fast response</h2>
+            <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300">
+              From urgent repairs to routine maintenance, every worker is verified and ready to support your home or business with transparent pricing.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/10 p-6 backdrop-blur">
+            <div className="flex items-center gap-3">
+              <BadgeCheck className="h-6 w-6 text-emerald-400" />
+              <div>
+                <p className="font-semibold">Verified professionals</p>
+                <p className="text-sm text-slate-300">Every profile is reviewed before listing</p>
+              </div>
+            </div>
+            <div className="mt-5 flex items-center gap-3">
+              <Clock3 className="h-6 w-6 text-emerald-400" />
+              <div>
+                <p className="font-semibold">Same-day availability</p>
+                <p className="text-sm text-slate-300">Most jobs are confirmed within minutes</p>
+              </div>
+            </div>
+            <div className="mt-5 flex items-center gap-3">
+              <MapPin className="h-6 w-6 text-emerald-400" />
+              <div>
+                <p className="font-semibold">Local coverage</p>
+                <p className="text-sm text-slate-300">Find workers close to your neighborhood</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="bg-slate-900 py-16">
-        <div className="mx-auto max-w-6xl px-4 flex flex-col items-center text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Ready to get started?
-          </h2>
-          <p className="mt-4 text-lg text-slate-300 max-w-xl">
-            Join hundreds of households and workers using NINT today.
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <a
-              href={WHATSAPP_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-500 px-8 py-4 text-base font-semibold text-white transition hover:bg-green-600"
-            >
-              Find a Worker <ArrowRight className="h-5 w-5" />
-            </a>
-            <a
-              href={GOOGLE_FORM_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-800 px-8 py-4 text-base font-semibold text-white ring-1 ring-inset ring-slate-700 transition hover:bg-slate-700"
-            >
-              Join as a Worker
-            </a>
+      <footer className="border-t border-slate-200 bg-white px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-4">
+          <div>
+            <p className="text-lg font-semibold text-slate-900">nint.co.in</p>
+            <p className="mt-3 text-sm leading-7 text-slate-600">Trusted marketplace for local workers and premium home services across India.</p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-slate-900">Quick Links</h3>
+            <ul className="mt-3 space-y-2 text-sm text-slate-600">
+              <li><Link href="/services" className="hover:text-primary">Find Workers</Link></li>
+              <li><a href="#how-it-works" className="hover:text-primary">How it works</a></li>
+              <li><a href="#about" className="hover:text-primary">About</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-semibold text-slate-900">Services</h3>
+            <ul className="mt-3 space-y-2 text-sm text-slate-600">
+              <li>Electrician</li>
+              <li>Plumber</li>
+              <li>Home Cleaning</li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-semibold text-slate-900">Follow</h3>
+            <div className="mt-3 flex items-center gap-3 text-slate-600">
+              <a href="#" className="rounded-full border border-slate-200 p-2 hover:border-primary hover:text-primary"><Globe2 className="h-4 w-4" /></a>
+              <a href="#" className="rounded-full border border-slate-200 p-2 hover:border-primary hover:text-primary"><Send className="h-4 w-4" /></a>
+              <a href="#" className="rounded-full border border-slate-200 p-2 hover:border-primary hover:text-primary"><MessageCircle className="h-4 w-4" /></a>
+            </div>
           </div>
         </div>
-      </section>
-
-      {/* Mobile Sticky Bottom Bar (High Conversion Hack for India) */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 p-3 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-        <div className="flex gap-3">
-          <a
-            href={GOOGLE_FORM_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-slate-100 px-4 py-3 text-sm font-bold text-slate-900 active:scale-95 transition"
-          >
-            Join as Worker
-          </a>
-          <a
-            href={WHATSAPP_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-[1.5] inline-flex items-center justify-center gap-2 rounded-xl bg-green-500 px-4 py-3 text-sm font-bold text-white active:scale-95 transition"
-          >
-            <MessageCircle className="h-4 w-4" />
-            Find Worker Now
-          </a>
-        </div>
-      </div>
-
-      {/* Footer */}
-      <footer className="bg-slate-900 py-8 pb-24 sm:pb-8">
-        <div className="mx-auto max-w-6xl px-4 text-center text-sm text-slate-400">
-          © {new Date().getFullYear()} NINT (nint.co.in). All rights reserved.
+        <div className="mx-auto mt-8 flex max-w-7xl flex-col gap-2 border-t border-slate-200 pt-6 text-sm text-slate-500 sm:flex-row sm:justify-between">
+          <p>© {new Date().getFullYear()} nint.co.in. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-2"><Star className="h-4 w-4 text-amber-500" /> Rated 4.9/5</span>
+            <span className="flex items-center gap-2"><MessageCircle className="h-4 w-4 text-emerald-500" /> WhatsApp booking</span>
+          </div>
         </div>
       </footer>
     </main>

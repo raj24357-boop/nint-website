@@ -1,6 +1,8 @@
+import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export default async function WorkerDashboardPage() {
   const session = await auth();
@@ -11,6 +13,7 @@ export default async function WorkerDashboardPage() {
   const worker = await prisma.worker.findUnique({
     where: { userId: session.user.id },
     include: {
+      skills: true,
       bookings: {
         include: { service: true, customer: { include: { user: true } } },
         orderBy: { createdAt: "desc" },
@@ -20,9 +23,26 @@ export default async function WorkerDashboardPage() {
   });
 
   const totalEarnings = worker?.bookings.reduce((sum, booking) => sum + booking.totalAmount, 0) ?? 0;
+  const profileIncomplete = !worker?.bio || !worker?.city || !worker?.hourlyRate || !worker?.whatsappNumber || !worker?.skills.length;
 
   return (
     <div className="space-y-6">
+      {profileIncomplete ? (
+        <Card className="border-amber-200 bg-amber-50/70">
+          <CardHeader>
+            <CardTitle className="text-amber-900">Complete your worker profile</CardTitle>
+            <CardDescription className="text-amber-800">
+              Add your bio, skills, city, hourly rate, and WhatsApp number so customers can find and book you easily.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild className="bg-amber-700 text-white hover:bg-amber-800">
+              <Link href="/worker/dashboard/profile">Complete Profile</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      ) : null}
+
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader>

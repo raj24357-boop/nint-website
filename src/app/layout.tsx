@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "nint.co.in | Trusted local service marketplace",
-  description: "Book verified professionals for home services, repairs, beauty, and more in India.",
+  title: "nint.co.in | Premium local service marketplace",
+  description: "Find verified electricians, plumbers, cleaners, and more near you in India.",
 };
 
 export default function RootLayout({
