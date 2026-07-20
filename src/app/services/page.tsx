@@ -1,7 +1,7 @@
 "use client";
 
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { BriefcaseBusiness, MapPin, MessageCircle, Search, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -39,7 +39,17 @@ type WorkerSummary = {
   primaryService: string;
 };
 
+// 1. Main Page Component - Wraps the content in Suspense to fix the build error
 export default function ServicesPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-50 flex items-center justify-center text-slate-600">Loading services...</div>}>
+      <ServicesContent />
+    </Suspense>
+  );
+}
+
+// 2. Actual Content Component - Uses useSearchParams here
+function ServicesContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [workers, setWorkers] = useState<WorkerSummary[]>([]);
