@@ -1,276 +1,301 @@
-import Link from "next/link";
-import {
-  BadgeCheck,
-  BrushCleaning,
-  Clock3,
-  Globe2,
-  Hammer,
-  MapPin,
-  MessageCircle,
-  Send,
-  ShieldCheck,
-  Sparkles,
-  Star,
-  UserPlus,
-  Wrench,
-  Zap,
-} from "lucide-react";
-import { Badge } from "../components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+"use client";
 
-const services = [
-  { title: "Electrician", icon: Zap, description: "Switches, wiring and urgent repairs" },
-  { title: "Plumber", icon: Wrench, description: "Leak fixes, taps and pipe installations" },
-  { title: "Carpenter", icon: Hammer, description: "Furniture work and home fittings" },
-  { title: "Painter", icon: BrushCleaning, description: "Wall, ceiling and touch-up painting" },
-  { title: "AC Repair", icon: Sparkles, description: "Cooling service and maintenance" },
-  { title: "Home Cleaning", icon: BadgeCheck, description: "Deep cleaning and move-in support" },
-];
+import React, { useState } from "react";
 
-const steps = [
-  { title: "Search", description: "Choose the service you need and compare nearby verified workers." },
-  { title: "Compare Profiles", description: "Review ratings, experience and pricing before you book." },
-  { title: "Book via WhatsApp", description: "Confirm availability instantly and get the job started fast." },
-];
-
-const trustBadges = [
-  "100% Verified Profiles",
-  "Instant Booking via WhatsApp",
-  "Best Market Rates",
+const WORKERS_DATA = [
+  {
+    id: 1,
+    name: "Ramesh Kumar",
+    category: "Electrician",
+    experience: "6 Years Exp",
+    location: "Peddapalli",
+    rating: "4.9",
+    reviews: 42,
+    phone: "919876543210",
+    image: "https://images.unsplash.com/photo-1540569014015-19a7be504e3a?w=150&auto=format&fit=crop&q=80",
+    verified: true,
+  },
+  {
+    id: 2,
+    name: "Suresh Verma",
+    category: "Plumber",
+    experience: "4 Years Exp",
+    location: "Karimnagar",
+    rating: "4.8",
+    reviews: 28,
+    phone: "919876543211",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+    verified: true,
+  },
+  {
+    id: 3,
+    name: "Mahesh Babu",
+    category: "Carpenter",
+    experience: "8 Years Exp",
+    location: "Peddapalli",
+    rating: "5.0",
+    reviews: 64,
+    phone: "919876543212",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
+    verified: true,
+  },
+  {
+    id: 4,
+    name: "Ravi Teja",
+    category: "Painter",
+    experience: "5 Years Exp",
+    location: "Peddapalli",
+    rating: "4.7",
+    reviews: 19,
+    phone: "919876543213",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80",
+    verified: true,
+  },
 ];
 
 export default function Home() {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const categories = ["All", "Electrician", "Plumber", "Carpenter", "Painter"];
+
+  const filteredWorkers = WORKERS_DATA.filter((worker) => {
+    const matchesCategory =
+      selectedCategory === "All" || worker.category === selectedCategory;
+    const matchesSearch =
+      worker.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      worker.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      worker.location.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900">
-      <div className="border-b border-slate-200 bg-slate-900 px-4 py-2 text-center text-sm font-medium text-slate-100">
-        Trusted by 10,000+ homes across India 🇮🇳
-      </div>
-
-      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-lg font-semibold text-white">
-              N
-            </div>
-            <div>
-              <p className="text-lg font-semibold tracking-tight text-slate-900">nint.co.in</p>
-              <p className="text-xs text-slate-500">Premium local services</p>
-            </div>
-          </Link>
-
-          <nav className="hidden items-center gap-6 text-sm font-medium text-slate-600 md:flex">
-            <Link href="/services" className="transition hover:text-primary">
-              Find Workers
-            </Link>
-            <a href="#how-it-works" className="transition hover:text-primary">
-              How it works
-            </a>
-            <a href="#about" className="transition hover:text-primary">
-              About
-            </a>
-          </nav>
-
-          <div className="flex items-center gap-3">
-            <Button asChild variant="outline" size="sm" className="hidden sm:inline-flex">
-              <Link href="/auth/login">Login</Link>
-            </Button>
-            <Button asChild size="sm" className="bg-primary text-white hover:bg-blue-700">
-              <Link href="/auth/register">Join as Worker</Link>
-            </Button>
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+      {/* 1. TOP NAVIGATION BAR */}
+      <header className="sticky top-0 z-50 bg-white border-b border-slate-200 px-4 lg:px-8 py-3 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2">
+          <div className="bg-emerald-600 text-white font-black text-xl px-3 py-1 rounded-lg">
+            N
           </div>
+          <div>
+            <h1 className="font-bold text-lg leading-none">NINT</h1>
+            <p className="text-xs text-slate-500">Local Service Marketplace</p>
+          </div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="flex-1 max-w-md hidden md:block">
+          <input
+            type="text"
+            placeholder="Search worker, skill, or location..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full bg-slate-100 border border-slate-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          />
+        </div>
+
+        {/* Right Actions */}
+        <div className="flex items-center gap-3">
+          <button className="text-sm font-semibold text-slate-700 hover:text-emerald-600">
+            Login
+          </button>
+          <a
+            href="#worker-register"
+            className="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition"
+          >
+            Join as Worker
+          </a>
         </div>
       </header>
 
-      <section className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-28">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-          <div>
-            <Badge className="mb-5 border-blue-200 bg-blue-50 text-blue-700">
-              <ShieldCheck className="mr-2 h-3.5 w-3.5" />
-              Trusted by 10,000+ homes across India
-            </Badge>
-            <h1 className="max-w-2xl text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-              Find Trusted Local Workers Instantly
-            </h1>
-            <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600">
-              Connecting you with verified daily wage workers and service professionals near you.
+      {/* 2. HERO / DUAL DASHBOARD BANNER */}
+      <section className="max-w-6xl mx-auto px-4 py-8">
+        <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-2xl p-6 md:p-10 shadow-xl flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="space-y-3 max-w-xl">
+            <span className="bg-emerald-500/20 text-emerald-400 text-xs font-semibold px-3 py-1 rounded-full border border-emerald-500/30">
+              Direct Customer to Worker Connection
+            </span>
+            <h2 className="text-2xl md:text-4xl font-bold">
+              Find Verified Local Workers Near You Instantly
+            </h2>
+            <p className="text-slate-300 text-sm md:text-base">
+              Instant WhatsApp or Call access. No agency commission. Fast and reliable service for your home.
             </p>
-
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg" className="bg-primary px-6 text-white hover:bg-blue-700">
-                <Link href="/services">
-                  <MessageCircle className="h-4 w-4" />
-                  Find a Worker Now
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="px-6">
-                <Link href="/auth/register">
-                  <UserPlus className="h-4 w-4" />
-                  Join as a Worker
-                </Link>
-              </Button>
-            </div>
-
-            <div className="mt-8 flex flex-col gap-3 text-sm font-medium text-slate-600 sm:flex-row sm:flex-wrap">
-              {trustBadges.map((badge) => (
-                <div key={badge} className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 shadow-sm">
-                  <span className="text-base">✓</span>
-                  {badge}
-                </div>
-              ))}
-            </div>
           </div>
 
-          <div className="rounded-shadow relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-3">
-            <img
-              src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80"
-              alt="Professional worker in uniform"
-              className="h-[420px] w-full rounded-[1.5rem] object-cover"
-            />
-            <div className="absolute inset-x-6 bottom-6 rounded-2xl border border-white/70 bg-white/90 p-4 shadow-lg backdrop-blur">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-slate-900">Verified local experts</p>
-                  <p className="text-sm text-slate-600">Available today for home and business needs</p>
-                </div>
-                <div className="rounded-full bg-emerald-500 px-3 py-1 text-sm font-semibold text-white">
-                  4.9/5 Rated
-                </div>
-              </div>
+          {/* Worker Sub Card */}
+          <div className="bg-slate-800/80 border border-slate-700 p-5 rounded-xl w-full md:w-80 space-y-3">
+            <h3 className="font-bold text-emerald-400 text-sm">Are You a Skilled Worker?</h3>
+            <p className="text-xs text-slate-300">
+              Get direct customer calls daily. Register your profile today.
+            </p>
+            <div className="text-lg font-bold text-white">
+              ₹99 <span className="text-xs font-normal text-slate-400">/ 30 Days</span>
             </div>
+            <a
+              href="#worker-register"
+              className="block text-center w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-sm py-2 rounded-lg transition"
+            >
+              Add Profile Now
+            </a>
           </div>
         </div>
       </section>
 
-      <section id="services" className="px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+      {/* 3. CATEGORY SELECTOR & FILTER */}
+      <section className="max-w-6xl mx-auto px-4 py-4">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-bold text-xl text-slate-800">Select Skilled Category</h3>
+          <span className="text-xs text-slate-500">{filteredWorkers.length} Workers Available</span>
+        </div>
+
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition ${
+                selectedCategory === cat
+                  ? "bg-emerald-600 text-white shadow-md"
+                  : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {/* 4. WORKER LIST (CUSTOMER DASHBOARD) */}
+      <section className="max-w-6xl mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+          {filteredWorkers.map((worker) => (
+            <div
+              key={worker.id}
+              className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-md transition flex flex-col sm:flex-row gap-4 items-center"
+            >
+              <img
+                src={worker.image}
+                alt={worker.name}
+                className="w-20 h-20 rounded-full object-cover border-2 border-emerald-500"
+              />
+
+              <div className="flex-1 text-center sm:text-left space-y-1">
+                <div className="flex items-center justify-center sm:justify-start gap-2">
+                  <h4 className="font-bold text-lg text-slate-900">{worker.name}</h4>
+                  {worker.verified && (
+                    <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                      Verified ✓
+                    </span>
+                  )}
+                </div>
+
+                <p className="text-sm font-medium text-emerald-600">
+                  {worker.category} • {worker.experience}
+                </p>
+
+                <p className="text-xs text-slate-500">
+                  📍 {worker.location} • ★ {worker.rating} ({worker.reviews} Reviews)
+                </p>
+
+                {/* Direct Connect Buttons */}
+                <div className="flex gap-2 pt-2 justify-center sm:justify-start">
+                  <a
+                    href={`tel:${worker.phone}`}
+                    className="flex-1 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2 px-3 rounded-lg text-center"
+                  >
+                    📞 Call Now
+                  </a>
+                  <a
+                    href={`https://wa.me/${worker.phone}?text=Hello%20${worker.name},%20I%20found%20your%20profile%20on%20NINT.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-slate-950 text-xs font-bold py-2 px-3 rounded-lg text-center"
+                  >
+                    💬 WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 5. WORKER REGISTRATION SECTION */}
+      <section id="worker-register" className="max-w-3xl mx-auto px-4 py-12">
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-md space-y-6">
+          <div className="text-center space-y-2">
+            <h3 className="text-2xl font-bold text-slate-900">Worker Profile Registration</h3>
+            <p className="text-sm text-slate-600">
+              Fill in your details, pay ₹99 for 30 days, and start receiving direct work calls.
+            </p>
+          </div>
+
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-600">Popular Services</p>
-              <h2 className="text-3xl font-semibold tracking-tight text-slate-900">Choose the service you need</h2>
+              <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                Full Name
+              </label>
+              <input
+                type="text"
+                placeholder="Enter your full name"
+                className="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+              />
             </div>
-            <Link href="/services" className="text-sm font-semibold text-primary hover:underline">
-              Explore all workers →
-            </Link>
-          </div>
 
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {services.map((service) => {
-              const Icon = service.icon;
-              return (
-                <Card key={service.title} className="border-slate-200 bg-white transition hover:-translate-y-1 hover:shadow-lg">
-                  <CardHeader className="pb-3">
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-primary">
-                      <Icon className="h-6 w-6" />
-                    </div>
-                    <CardTitle className="text-xl">{service.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm leading-7 text-slate-600">{service.description}</p>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                  Mobile / WhatsApp Number
+                </label>
+                <input
+                  type="text"
+                  placeholder="10-digit mobile number"
+                  className="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                  Skill Category
+                </label>
+                <select className="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                  <option>Electrician</option>
+                  <option>Plumber</option>
+                  <option>Carpenter</option>
+                  <option>Painter</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                Location / City
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. Peddapalli"
+                className="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+              />
+            </div>
+
+            <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl flex items-center justify-between">
+              <div>
+                <p className="font-bold text-sm text-slate-900">30 Days Subscription Fee</p>
+                <p className="text-xs text-slate-500">Your profile will stay active for 1 month</p>
+              </div>
+              <span className="text-xl font-black text-emerald-600">₹99</span>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition text-sm"
+            >
+              Pay ₹99 & Submit Profile
+            </button>
+          </form>
         </div>
       </section>
-
-      <section id="how-it-works" className="px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm sm:p-12">
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-600">How it works</p>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">Three simple steps to book trusted help</h2>
-          </div>
-
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
-            {steps.map((step, index) => (
-              <div key={step.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white">
-                  0{index + 1}
-                </div>
-                <h3 className="text-xl font-semibold text-slate-900">{step.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="about" className="px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-6 rounded-[2rem] border border-slate-200 bg-slate-900 p-8 text-white shadow-xl lg:grid-cols-[1fr_0.7fr] lg:p-12">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-200">Why customers choose nint</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight">Premium service, real trust and fast response</h2>
-            <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300">
-              From urgent repairs to routine maintenance, every worker is verified and ready to support your home or business with transparent pricing.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-white/10 bg-white/10 p-6 backdrop-blur">
-            <div className="flex items-center gap-3">
-              <BadgeCheck className="h-6 w-6 text-emerald-400" />
-              <div>
-                <p className="font-semibold">Verified professionals</p>
-                <p className="text-sm text-slate-300">Every profile is reviewed before listing</p>
-              </div>
-            </div>
-            <div className="mt-5 flex items-center gap-3">
-              <Clock3 className="h-6 w-6 text-emerald-400" />
-              <div>
-                <p className="font-semibold">Same-day availability</p>
-                <p className="text-sm text-slate-300">Most jobs are confirmed within minutes</p>
-              </div>
-            </div>
-            <div className="mt-5 flex items-center gap-3">
-              <MapPin className="h-6 w-6 text-emerald-400" />
-              <div>
-                <p className="font-semibold">Local coverage</p>
-                <p className="text-sm text-slate-300">Find workers close to your neighborhood</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <footer className="border-t border-slate-200 bg-white px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-4">
-          <div>
-            <p className="text-lg font-semibold text-slate-900">nint.co.in</p>
-            <p className="mt-3 text-sm leading-7 text-slate-600">Trusted marketplace for local workers and premium home services across India.</p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-slate-900">Quick Links</h3>
-            <ul className="mt-3 space-y-2 text-sm text-slate-600">
-              <li><Link href="/services" className="hover:text-primary">Find Workers</Link></li>
-              <li><a href="#how-it-works" className="hover:text-primary">How it works</a></li>
-              <li><a href="#about" className="hover:text-primary">About</a></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold text-slate-900">Services</h3>
-            <ul className="mt-3 space-y-2 text-sm text-slate-600">
-              <li>Electrician</li>
-              <li>Plumber</li>
-              <li>Home Cleaning</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold text-slate-900">Follow</h3>
-            <div className="mt-3 flex items-center gap-3 text-slate-600">
-              <a href="#" className="rounded-full border border-slate-200 p-2 hover:border-primary hover:text-primary"><Globe2 className="h-4 w-4" /></a>
-              <a href="#" className="rounded-full border border-slate-200 p-2 hover:border-primary hover:text-primary"><Send className="h-4 w-4" /></a>
-              <a href="#" className="rounded-full border border-slate-200 p-2 hover:border-primary hover:text-primary"><MessageCircle className="h-4 w-4" /></a>
-            </div>
-          </div>
-        </div>
-        <div className="mx-auto mt-8 flex max-w-7xl flex-col gap-2 border-t border-slate-200 pt-6 text-sm text-slate-500 sm:flex-row sm:justify-between">
-          <p>© {new Date().getFullYear()} nint.co.in. All rights reserved.</p>
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-2"><Star className="h-4 w-4 text-amber-500" /> Rated 4.9/5</span>
-            <span className="flex items-center gap-2"><MessageCircle className="h-4 w-4 text-emerald-500" /> WhatsApp booking</span>
-          </div>
-        </div>
-      </footer>
-    </main>
+    </div>
   );
 }

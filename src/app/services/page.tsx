@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { BriefcaseBusiness, MapPin, MessageCircle, Search, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -39,7 +39,8 @@ type WorkerSummary = {
   primaryService: string;
 };
 
-export default function ServicesPage() {
+// 1. Core Logic Moved into Inner Component
+function ServicesContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [workers, setWorkers] = useState<WorkerSummary[]>([]);
@@ -182,5 +183,14 @@ export default function ServicesPage() {
         )}
       </div>
     </main>
+  );
+}
+
+// 2. Wrapped Export Function with Suspense
+export default function ServicesPage() {
+  return (
+    <Suspense fallback={<div className="p-10 text-center text-sm text-slate-600">Loading page...</div>}>
+      <ServicesContent />
+    </Suspense>
   );
 }
